@@ -12,18 +12,55 @@
     <title>Buzzer App</title>
     <style>
         body {
-            margin-top: 100px;
+            background-color: #f0efef;
+        }
+        
+        .container {
+            margin-top: 25px;
+        }
+        
+        #tag {
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        #logo {
+            height: 100px;
+            padding: 10px;
+            margin-left: 15px;
+        }
+        
+        #title {
+            margin-top: 20px;
+            font-family: 'Merriweather', serif;
+            color: brown;
+            margin-left: 50px;
+        }
+        
+        .header {
+            width: 98%;
+            background-color: #ddeedd;
+            box-shadow: 0 5px 2px -2px gray;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
+    <div class="header">
         <div class="row">
             <div class="col-md-8">
-                <div class="well" style="text-align: center;">
-                    <h3>Team Numbers</h3>
-                    <div id="users"></div>
+                <h1 id="title">CSI-VESIT</h1>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <button type="button" class="btn btn-primary" id="refresh">Refresh</button>
+            <div class="col-md-12">
+                <div style="text-align: center;">
+                    <h3 style="margin-bottom: 25px;">Team Numbers</h3>
+                    <ul class="list-group" id="users">
+                    </ul>
                 </div>
             </div>
         </div>
@@ -31,8 +68,14 @@
             $(function() {
                 var socket = io.connect();
                 socket.on('new message', function(data) {
-                    $('#users').append('<div class="well">' + data.msg + '</div>');
-                })
+                    var audio = new Audio('buzz.mp3');
+                    audio.play();
+                    $('#users').append('<div class="well" id="tag">' + data.msg + '</div>');
+                });
+
+                $('#refresh').click(function() {
+                    $('#users').text('');
+                });
             });
         </script>
 </body>

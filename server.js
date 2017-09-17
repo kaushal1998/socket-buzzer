@@ -5,7 +5,7 @@ var io = require('socket.io').listen(server);
 
 users = [];
 connections = [];
-
+app.use(express.static(__dirname + '/public'));
 server.listen(process.env.PORT || 3000);
 console.log('Server Running');
 
@@ -15,6 +15,11 @@ app.get('/host', function(req, res) {
 
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/index.html');
+});
+
+app.get('/buzz.mp3', function(req, res) {
+    res.setHeader('Content-Type', 'audio/mpeg');
+    res.sendFile(__dirname + '/buzz.mp3');
 });
 
 io.sockets.on('connection', function(socket) {

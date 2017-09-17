@@ -9,13 +9,14 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="/socket.io/socket.io.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
     <title>Buzzer App</title>
     <style>
         body {
-            margin-top: 100px;
+            background-color: #f0efef;
         }
         
-        .btn {
+        #buzz {
             height: 200px;
             width: 200px;
             border-radius: 50%;
@@ -23,28 +24,84 @@
             margin: auto;
             box-shadow: 0 0 5px brown;
         }
+        
+        #loginArea,
+        #buzzerArea {
+            margin-top: 100px;
+        }
+        
+        #team_no {
+            display: block;
+            margin: auto;
+            width: 80%;
+            height: 45px;
+            text-align: center;
+        }
+        
+        #go {
+            display: block;
+            margin: auto;
+        }
+        
+        #logo {
+            height: 100px;
+            padding: 10px;
+            margin-left: 15px;
+        }
+        
+        #title {
+            margin-top: 20px;
+            font-family: 'Merriweather', serif;
+            color: brown;
+            margin-left: 50px;
+        }
+        
+        .header {
+            width: 100%;
+            background-color: #ddeedd;
+            box-shadow: 0 10px 6px -6px gray;
+        }
     </style>
 </head>
 
 <body>
+
+    <div class="header">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 id="title">CSI-VESIT</h1>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div id="loginArea" class="row">
-            <div class="col-md-8">
-                < </div>
-            </div>
-            <button type="button" class="btn btn-danger" id="buzz">
-            BUZZ
-        </button>
+            <input type="number" class="form-control" id="team_no" placeholder="Enter Your Team No. here">
+            <br/>
+            <button type="submit" class="btn btn-primary" id="go">Go</button>
         </div>
-        <script>
-            $(function() {
-                var socket = io.connect();
-                $('#buzz').click(function() {
-                    console.log('hello');
-                    socket.emit('send message', 'buzz');
-                });
+        <div id="buzzerArea" class="row">
+            <button type="button" class="btn btn-danger" id="buzz">
+                BUZZ
+            </button>
+        </div>
+    </div>
+    <script>
+        $(function() {
+            teamNo = 0;
+            $('#buzzerArea').css('display', 'none');
+            var socket = io.connect();
+            $('#go').click(function() {
+                teamNo = $('#team_no').val();
+                console.log(teamNo);
+                $('#loginArea').css('display', 'none');
+                $('#buzzerArea').css('display', 'block');
             });
-        </script>
+            $('#buzz').click(function() {
+                console.log('hello');
+                socket.emit('send message', 'Team No: ' + teamNo);
+            });
+        });
+    </script>
 </body>
 
 </html>
