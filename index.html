@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <title>Buzzer App</title>
+    <style>
+        body {
+            margin-top: 100px;
+        }
+        
+        .btn {
+            height: 200px;
+            width: 200px;
+            border-radius: 50%;
+            display: block;
+            margin: auto;
+            box-shadow: 0 0 5px brown;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="loginArea" class="row">
+            <div class="col-md-8">
+                < </div>
+            </div>
+            <button type="button" class="btn btn-danger" id="buzz">
+            BUZZ
+        </button>
+        </div>
+        <script>
+            $(function() {
+                var socket = io.connect();
+                $('#buzz').click(function() {
+                    console.log('hello');
+                    socket.emit('send message', 'buzz');
+                });
+            });
+        </script>
+</body>
+
+</html>

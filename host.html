@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <title>Buzzer App</title>
+    <style>
+        body {
+            margin-top: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="well" style="text-align: center;">
+                    <h3>Team Numbers</h3>
+                    <div id="users"></div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(function() {
+                var socket = io.connect();
+                socket.on('new message', function(data) {
+                    $('#users').append('<div class="well">' + data.msg + '</div>');
+                })
+            });
+        </script>
+</body>
+
+</html>
