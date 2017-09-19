@@ -2,8 +2,15 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
+var mysql = require('mysql');
 
-users = [];
+var con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "csi"
+});
+
 connections = [];
 app.use(express.static(__dirname + '/public'));
 server.listen(process.env.PORT || 3000);
@@ -34,5 +41,16 @@ io.sockets.on('connection', function(socket) {
     socket.on('send message', function(data) {
         io.sockets.emit('new message', { msg: data });
         console.log(data);
+    });
+
+    socket.on('updateSQL', function(data) {
+        con.query('SELECT points from scores where team_no = ' + data.team_no, function(error, result) {
+            if (error) throw error;
+            points = parseInt(data.points) + parseInt(result[0].points);
+            con.query('UPDATE scores SET points = ' + points + ' WHERE team_no = ' + data.team_no, function(err, res) {
+                if (err) throw err;
+                io.sockets.emit('refresh page', { msg: 'none' });
+            });
+        });
     });
 });

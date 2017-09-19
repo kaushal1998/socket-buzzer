@@ -42,6 +42,17 @@
             background-color: #ddeedd;
             box-shadow: 0 5px 2px -2px gray;
         }
+        
+        .btn {
+            float: right;
+            margin-right: 0;
+        }
+        
+        #score {
+            width: 300px;
+            margin-right: 50px;
+            float: right;
+        }
     </style>
 </head>
 
@@ -56,6 +67,7 @@
     <div class="container">
         <div class="row">
             <button type="button" class="btn btn-primary" id="refresh">Refresh</button>
+            <input type="number" id="score" class="form-control" placeholder="Enter Score here">
             <div class="col-md-12">
                 <div style="text-align: center;">
                     <h3 style="margin-bottom: 25px;">Team Numbers</h3>
@@ -66,17 +78,34 @@
         </div>
         <script>
             $(function() {
-                var socket = io.connect();
+                socket = io.connect();
                 socket.on('new message', function(data) {
                     var audio = new Audio('buzz.mp3');
                     audio.play();
-                    $('#users').append('<div class="well" id="tag">' + data.msg + '</div>');
+                    $('#users').append('<div class="well" id="tag">Team No. ' + data.msg + '<button type="button" class="btn btn-primary" onclick="updateSQL(' + data.msg + ')">+</button></div>');
                 });
 
                 $('#refresh').click(function() {
                     $('#users').text('');
                 });
+
+                socket.on('refresh page', function(data) {
+                    $('#refresh').click();
+                });
             });
+
+            function updateSQL(team_no) {
+                points = $('#score').val();
+                if (points == null || points == 0) {
+                    alert('Enter Valid Score');
+                    return;
+                }
+                console.log(team_no);
+                socket.emit('updateSQL', {
+                    team_no: team_no,
+                    points: points
+                });
+            }
         </script>
 </body>
 
